@@ -13,31 +13,31 @@ namespace Tyuiu.AjtkuzhinovEE.Sprint7.V6.Lib
         }
 
 
-        // 1. Загрузить данные из файла в матрицу
+        //Загрузка файла
         public string[,] LoadFromFile(string path)
         {
             // Проверяем есть ли файл
             if (!File.Exists(path))
                 return new string[0, 0];
 
-            // Читаем все строки
+            // Читаемстроки
             string[] lines = File.ReadAllLines(path, Encoding.GetEncoding(1251));
 
             // Если файл пустой
             if (lines.Length == 0)
                 return new string[0, 0];
 
-            // Определяем разделитель (; или ,)
+            // Определяем разделитель (;)
             char separator = lines[0].Contains(';') ? ';' : ',';
 
-            // Определяем размеры матрицы
+            //размеры матрицы
             int rows = lines.Length;
             int columns = lines[0].Split(separator).Length;
 
             // Создаем матрицу
             string[,] matrix = new string[rows, columns];
 
-            // Заполняем матрицу
+            //Заполняем матрицу
             for (int i = 0; i < rows; i++)
             {
                 string[] parts = lines[i].Split(separator);
@@ -53,7 +53,7 @@ namespace Tyuiu.AjtkuzhinovEE.Sprint7.V6.Lib
             return matrix;
         }
 
-        // 2. Сохранить матрицу в файл
+        //Сохранить матрицу в файл
         public void SaveToFile(string path, string[,] matrix)
         {
             StringBuilder csv = new StringBuilder();
@@ -74,18 +74,18 @@ namespace Tyuiu.AjtkuzhinovEE.Sprint7.V6.Lib
             File.WriteAllText(path, csv.ToString(), Encoding.GetEncoding(1251));
         }
 
-        // 3. ПОИСК по матрице
+        //поиск по матрице
         public string[,] SearchInMatrix(string[,] matrix, string searchWord)
         {
             if (string.IsNullOrEmpty(searchWord))
                 return matrix;
 
-            // Считаем сколько строк подходят
+            //Кол-во подходящих строк
             int foundCount = 0;
             int rows = matrix.GetLength(0);
             int cols = matrix.GetLength(1);
 
-            // Первый проход - подсчет
+            //подсчет !!
             for (int i = 1; i < rows; i++) // с 1, чтобы пропустить заголовок
             {
                 for (int j = 0; j < cols; j++)
@@ -98,16 +98,16 @@ namespace Tyuiu.AjtkuzhinovEE.Sprint7.V6.Lib
                 }
             }
 
-            // Создаем новую матрицу для результатов
+            // Создаем новую матрицу для результата
             string[,] result = new string[foundCount + 1, cols]; // +1 для заголовка
 
-            // Копируем заголовок
+            //Копируем заголовок
             for (int j = 0; j < cols; j++)
             {
                 result[0, j] = matrix[0, j];
             }
 
-            // Второй проход - заполнение
+            //заполнение  !!
             int currentRow = 1;
             for (int i = 1; i < rows; i++)
             {
@@ -134,15 +134,15 @@ namespace Tyuiu.AjtkuzhinovEE.Sprint7.V6.Lib
             return result;
         }
 
-        // 4. СОРТИРОВКА матрицы по столбцу
+        //Сортировкв матрицы по столбцу
         public string[,] SortMatrixByColumn(string[,] matrix, int columnIndex, bool ascending = true)
         {
             int rows = matrix.GetLength(0);
             int cols = matrix.GetLength(1);
 
-            if (rows <= 1) return matrix; // только заголовок или пусто
+            if (rows <= 1) return matrix; // только заголовок,иначе пусто
 
-            // Создаем временный массив для строк данных (без заголовка)
+            //Создаем временный массив( для строк данных (без заголовка))
             string[][] dataRows = new string[rows - 1][];
 
             for (int i = 0; i < rows - 1; i++)
@@ -154,7 +154,7 @@ namespace Tyuiu.AjtkuzhinovEE.Sprint7.V6.Lib
                 }
             }
 
-            // Сортируем
+            //Сортируем
             if (ascending)
                 Array.Sort(dataRows, (a, b) => string.Compare(a[columnIndex], b[columnIndex]));
             else
@@ -163,13 +163,13 @@ namespace Tyuiu.AjtkuzhinovEE.Sprint7.V6.Lib
             // Создаем новую матрицу
             string[,] sortedMatrix = new string[rows, cols];
 
-            // Копируем заголовок
+            //Копируем заголовок
             for (int j = 0; j < cols; j++)
             {
                 sortedMatrix[0, j] = matrix[0, j];
             }
 
-            // Копируем отсортированные данные
+            // Копируем (отсортированные) данные
             for (int i = 0; i < rows - 1; i++)
             {
                 for (int j = 0; j < cols; j++)
@@ -181,7 +181,7 @@ namespace Tyuiu.AjtkuzhinovEE.Sprint7.V6.Lib
             return sortedMatrix;
         }
 
-        // 5. ФИЛЬТРАЦИЯ - получить все строки где в столбце нужное значение
+        //Получаем все строки, где в столбце нужное значение
         public string[,] FilterByColumnValue(string[,] matrix, int columnIndex, string filterValue)
         {
             if (string.IsNullOrEmpty(filterValue))
@@ -190,7 +190,7 @@ namespace Tyuiu.AjtkuzhinovEE.Sprint7.V6.Lib
             int rows = matrix.GetLength(0);
             int cols = matrix.GetLength(1);
 
-            // Считаем сколько строк подходят
+            //Считаем нужные строки
             int filteredCount = 0;
             for (int i = 1; i < rows; i++)
             {
@@ -198,16 +198,16 @@ namespace Tyuiu.AjtkuzhinovEE.Sprint7.V6.Lib
                     filteredCount++;
             }
 
-            // Создаем новую матрицу
+            //Создаем новую матрицу
             string[,] result = new string[filteredCount + 1, cols];
 
-            // Копируем заголовок
+            //Копируем заголовок
             for (int j = 0; j < cols; j++)
             {
                 result[0, j] = matrix[0, j];
             }
 
-            // Копируем подходящие строки
+            //Копируем нужные строки
             int currentRow = 1;
             for (int i = 1; i < rows; i++)
             {
@@ -224,7 +224,7 @@ namespace Tyuiu.AjtkuzhinovEE.Sprint7.V6.Lib
             return result;
         }
 
-        // 6. СТАТИСТИКА - подсчитать сколько раз встречается значение в столбце
+        //Считаем сколько раз встречается значение в столбце
         public string[,] GetColumnStatistics(string[,] matrix, int columnIndex)
         {
             int rows = matrix.GetLength(0);
@@ -258,7 +258,7 @@ namespace Tyuiu.AjtkuzhinovEE.Sprint7.V6.Lib
             return stats;
         }
 
-        // 7. Получить все уникальные значения из столбца
+        //Получим все (уникальные) значения из столбца
         public string[] GetUniqueValues(string[,] matrix, int columnIndex)
         {
             int rows = matrix.GetLength(0);
@@ -279,14 +279,14 @@ namespace Tyuiu.AjtkuzhinovEE.Sprint7.V6.Lib
             return result;
         }
 
-        // 8. Получить общее количество пациентов
+        //Получаем кол-во пациентов
         public int GetPatientCount(string[,] matrix)
         {
-            // Количество строк минус заголовок
+            //Кол-во строк минус заголовок
             return matrix.GetLength(0) - 1;
         }
 
-        // 9. Получить количество пациентов на диспансерном учете
+        //Получаем кол-во пациентов на диспансерном учете
         public int GetOnDispensaryCount(string[,] matrix)
         {
             int count = 0;
@@ -315,7 +315,7 @@ namespace Tyuiu.AjtkuzhinovEE.Sprint7.V6.Lib
             return count;
         }
 
-        // 10. Получить самое частое значение в столбце
+        //Получаем самое частое значение в столбце
         public string GetMostFrequentValue(string[,] matrix, int columnIndex)
         {
             var stats = GetColumnStatistics(matrix, columnIndex);

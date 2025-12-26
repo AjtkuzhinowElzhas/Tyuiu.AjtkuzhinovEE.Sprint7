@@ -92,7 +92,7 @@ namespace Tyuiu.AjtkuzhinovEE.Sprint7.V6
                 // Укажи фильтр для Excel-подобных файлов
                 saveFileDialog_AEE.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
                 saveFileDialog_AEE.FilterIndex = 1;
-                saveFileDialog_AEE.FileName = "Patient.csv"; // Явно укажи расширение
+                saveFileDialog_AEE.FileName = "Patient.csv"; 
 
                 if (saveFileDialog_AEE.ShowDialog() == DialogResult.OK)
                 {
@@ -154,18 +154,18 @@ namespace Tyuiu.AjtkuzhinovEE.Sprint7.V6
                 return;
             }
 
-            // Используем ваш метод SearchInMatrix
+            // использование SearchInMatrix
             string[,] searchResults = ds.SearchInMatrix(currentMatrix, searchText);
 
             if (searchResults.GetLength(0) <= 1)
             {
                 MessageBox.Show("Ничего не найдено!", "Поиск",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
-                DisplayDataInDataGridView(); // показываем все данные
+                DisplayDataInDataGridView(); // показываем данные
             }
             else
             {
-                // Отображаем результаты поиска
+                // Отображаем результаты поика
                 DisplaySearchResultsInGridView(searchResults);
 
                 MessageBox.Show($"Найдено записей: {searchResults.GetLength(0) - 1}",
@@ -212,13 +212,13 @@ namespace Tyuiu.AjtkuzhinovEE.Sprint7.V6
             int rows = currentMatrix.GetLength(0);
             int cols = currentMatrix.GetLength(1);
 
-            // Добавляем столбцы (первая строка - заголовки)
+            // Добавляем столбцы (заголовки)
             for (int j = 0; j < cols; j++)
             {
                 dataGridView.Columns.Add($"Column{j}", currentMatrix[0, j]);
             }
 
-            // Добавляем строки с данными (начиная со второй строки)
+            // Добавляем строки с данными (со второй строки)
             for (int i = 1; i < rows; i++)
             {
                 string[] rowData = new string[cols];
